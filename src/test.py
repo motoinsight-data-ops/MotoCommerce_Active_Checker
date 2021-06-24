@@ -13,7 +13,7 @@ url3 = 'https://www.vwvicto.com/en/sitemap'
 url4 = 'https://www.midstatemitsu.com/sitemap/'
 
 
-url5 = 'https://www.vegford.ca/'
+url5 = 'https://www.midstatemitsu.com'
 
 url = url5
 
@@ -34,7 +34,7 @@ if 'fr' in driver.current_url.split('/')[-1]:
     driver.get(new_url)
 
 
-hasSiteMap = getSiteMap(driver)
+# hasSiteMap = getSiteMap(driver)
 
 active = isActive(driver, url)
 

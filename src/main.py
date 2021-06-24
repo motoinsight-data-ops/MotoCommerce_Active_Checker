@@ -23,6 +23,7 @@ Notes:
 - Excel file should containg 'Account Name' column, containing the dealership name to check
 
 - After that, you must pick an EXCEL file (.xlsx) to input from the list that appears
+- *** MAKE SURE TO WAIT FOR AD BLOCK TO FINISH INSTALLING ***
 - (Please type the file name accurately including the extension)
 
 - Let it run. It will take a while depending on how many sites you are checking,
@@ -100,6 +101,13 @@ class ContactScraper:
             print("Page: ", cur, " / ", numRows)
             
             dealer_name = row['Account Name']
+            # Check if row is empty
+            if pd.isnull(dealer_name):
+                isActiveList.append(None)
+                urlList.append(None)
+                siteMaps.append(None)
+                cur += 1
+                continue
             url = None
 
             # This is here because of weird errors
@@ -125,6 +133,11 @@ class ContactScraper:
             hasSiteMap = 'Not needed right now'
             active = isActive(self.driver, url)
 
+            if active == False:
+                hasSiteMap = getSiteMap(self.driver)
+                find_car_with_site_map(self.driver, url)
+                active = isActive(driver, url)
+                
 
             # Append to rows that will later be added to the dataframe
             isActiveList.append(active)
@@ -133,7 +146,7 @@ class ContactScraper:
             print(url + " Is Active: ", active)
             self.saveRow(dealer_name, url, hasSiteMap, active)
             cur += 1
-
+        
         # Add new completed columns to dataframe
         self.df['URL'] = urlList
         self.df['Is Active Motocommerce'] = isActiveList
