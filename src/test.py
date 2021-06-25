@@ -13,7 +13,7 @@ url3 = 'https://www.vwvicto.com/en/sitemap'
 url4 = 'https://www.midstatemitsu.com/sitemap/'
 
 
-url5 = 'https://www.midstatemitsu.com'
+url5 = 'https://www.mikejacksongm.com/'
 
 url = url5
 
@@ -33,9 +33,16 @@ if 'fr' in driver.current_url.split('/')[-1]:
     new_url += driver.current_url.split('/')[-1].replace('fr', 'en')
     driver.get(new_url)
 
-
-# hasSiteMap = getSiteMap(driver)
-
+            
+# hasSiteMap = getSiteMap(self.driver)
+hasSiteMap = 'Not needed right now'
 active = isActive(driver, url)
+
+print('After first isActive')
+
+if active == False:
+    hasSiteMap = getSiteMap(driver)
+    find_car_with_site_map(driver, url)
+    active = isActive_with_site_map(driver, url)
 
 print(active)

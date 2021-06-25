@@ -142,7 +142,20 @@ def find_car_with_site_map(driver, url):
                 continue
     
     if found == False:
-        driver.get(url+'new/')
+        errorCount = 0
+        success = False
+        while success == False:
+            if errorCount > 10:
+                print("Fatal error with site: " + url)
+                print("Error number reached while trying to get new inventory page")
+                return False
+            try:
+                driver.get(url.replace('/eng/', '')+'/new/inventory/search.html')
+                errorCount += 1
+                success = True
+            except:
+                pass
+        
 
     # for element in all_elements:
     #     try:
@@ -234,6 +247,7 @@ def find_car(driver, url):
 
     for element in all_elements:
         try:
+            # print(element.text)
             # Search all google search results elements to find first link
             if 'inventory' in element.text.lower() or 'inventaire' in element.text.lower():
                 driver.get(element.get_attribute('href'))
@@ -261,6 +275,14 @@ def find_car(driver, url):
             continue
 
     return False
+
+def isActive_with_site_map(driver, url):
+    active = False
+    html_source = driver.page_source.lower()
+    if 'motocommerce' in html_source or 'motoinsight' in html_source:
+        active = True
+
+    return active
 
 
 def isActive(driver, url):

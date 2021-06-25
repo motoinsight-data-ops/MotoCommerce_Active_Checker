@@ -116,8 +116,16 @@ class ContactScraper:
                     url = find_website(self.driver, dealer_name)
                 except:
                     pass
-
-            self.driver.get(url)
+            # This is also here because of a timed out receiving message
+            # from renderer error
+            success = False
+            while success == False:
+                try:
+                    self.driver.get(url)
+                    success = True
+                except:
+                    pass
+            
             new_url = ''
 
             # Check if site is in french
@@ -136,7 +144,7 @@ class ContactScraper:
             if active == False:
                 hasSiteMap = getSiteMap(self.driver)
                 find_car_with_site_map(self.driver, url)
-                active = isActive(driver, url)
+                active = isActive_with_site_map(self.driver, url)
                 
 
             # Append to rows that will later be added to the dataframe
